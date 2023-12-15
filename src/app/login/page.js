@@ -12,11 +12,56 @@ const LoginPage = () => {
   //   console.log(AuthContext);
 
   // Redirect if the user is already authenticated
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push('/');
+  //   }
+  // }, [user, router]);
+
   useEffect(() => {
     if (user) {
-      router.push('/');
+      // Assuming you have a function to check if the user exists in your DB
+      checkIfUserExists(user);
+      console.log(user.uid);
     }
-  }, [user, router]);
+  }, [user]);
+
+  const checkIfUserExists = async (user) => {
+    try {
+      // Fetch endpoint to check if user exists based on 'user.uid'
+      const res = await fetch(`/api/users/${user.uid}`);
+      const data = await res.json();
+      console.log('data', data);
+      if (data === null) {
+        await postUserData(user); // Post user info if not found
+      }
+      console.log('checking if user exist');
+      router.push('/'); // Redirect to homepage after login
+    } catch (error) {
+      console.error('Error checking user:', error);
+    }
+  };
+
+  const postUserData = async (user) => {
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+      console.log('res', res);
+
+      if (res.ok) {
+        console.log('User data posted successfully.');
+      } else {
+        console.error('Failed to post user data.');
+      }
+    } catch (error) {
+      console.error('Error posting user data:', error);
+    }
+  };
 
   const HandleSignIn = async () => {
     setLoad(true);
