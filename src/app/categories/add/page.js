@@ -10,7 +10,6 @@ const AddNewCategoryPage = () => {
     categoryName: '',
     uid: user?.uid,
   });
-
   const HandleInputChange = (e) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
