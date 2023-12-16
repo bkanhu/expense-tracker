@@ -4,11 +4,12 @@
 import { useRouter } from 'next/navigation';
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
+import Image from 'next/image';
 
 const LoginPage = () => {
   const router = useRouter();
   const [Load, setLoad] = useState(false);
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, login, logout, authToken } = useContext(AuthContext);
   //   console.log(AuthContext);
 
   // Redirect if the user is already authenticated
@@ -29,7 +30,13 @@ const LoginPage = () => {
   const checkIfUserExists = async (user) => {
     try {
       // Fetch endpoint to check if user exists based on 'user.uid'
-      const res = await fetch(`/api/users/${user.uid}`);
+      const res = await fetch(`/api/users/${user.uid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       const data = await res.json();
       console.log('data', data);
       if (data === null) {
@@ -48,6 +55,7 @@ const LoginPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(user),
       });
@@ -77,13 +85,34 @@ const LoginPage = () => {
     await logout();
   };
   return (
-    <div>
-      LoginPage
+    <div className="flex flex-col items-center justify-center w-full h-screen">
+      <div className="flex items-center justify-center mb-16 space-x-4">
+        <Image
+          src="/logo.svg"
+          alt="ExpenseTrackr Logo"
+          width={300}
+          height={300}
+          className="w-10 h-10 rounded-lg"
+        />
+        <span className="text-3xl font-bold">ExpenseTrackr</span>
+      </div>
+      <p className="w-1/3 mx-auto mb-12 text-lg font-medium text-center">
+        Your expense management journey starts now!
+      </p>
       <button
         onClick={HandleSignIn}
-        className="flex items-center justify-center w-full p-3 mt-4 space-x-2 font-semibold text-white transition duration-300 bg-black rounded hover:bg-stone-600"
+        className="inline-block w-[250px] p-3 mt-4 space-x-2 font-semibold text-white transition duration-300 bg-black rounded hover:bg-stone-600"
       >
-        <span>Continue With Google</span>
+        <div className="flex items-center justify-center space-x-4">
+          <Image
+            src="/Google__G__logo.svg"
+            alt="Google Logo"
+            width={20}
+            height={20}
+            className="w-8 h-8"
+          />
+          <span>Continue With Google</span>
+        </div>
       </button>
       {user ? (
         <button onClick={HandleSignOut} className="">
