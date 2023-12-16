@@ -8,10 +8,17 @@ export async function POST(request) {
   const db = client.db('expenseTracker');
   const collection = db.collection('paymentMethods');
 
+  const token = request.headers.get('authorization');
+  // Extract the token from the header (assuming a "Bearer" token)
+  const bearerToken = token.split(' ')[1];
+
+  if (!bearerToken) {
+    return NextResponse.json({ error: 'Unauthorized' });
+  }
+
   const { paymentMethodType, paymentMethodIndicator, uid } =
     await request.json();
-  console.log('uid', uid);
-  console.log('paymentMethodIndicator', paymentMethodIndicator);
+
   try {
     const res = await collection.insertOne({
       paymentMethodType,
@@ -31,18 +38,22 @@ export async function GET(request) {
 
   const db = client.db('expenseTracker');
   const collection = db.collection('paymentMethods');
-  // const { uid } = await request.query;
 
-  // const url = new URL(request.url);
-  // console.log('request', request.nextUrl);
+  const token = request.headers.get('authorization');
+  // Extract the token from the header (assuming a "Bearer" token)
+  const bearerToken = token.split(' ')[1];
+
+  if (!bearerToken) {
+    return NextResponse.json({ error: 'Unauthorized' });
+  }
+
   const searchParams = request.nextUrl.searchParams;
   const uid = searchParams.get('uid');
 
-  console.log('uid', uid);
+  // console.log('uid', uid);
 
   try {
     const paymentMethods = await collection.find({ uid: uid }).toArray();
-    // const paymentMethods = { hello: 'world' };
     return NextResponse.json(paymentMethods);
   } catch (error) {
     console.error('Error in API route:', error);

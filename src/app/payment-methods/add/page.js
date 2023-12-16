@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 const AddPaymentMethodPage = () => {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, login, logout, authToken } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     paymentMethodType: '',
@@ -31,6 +31,7 @@ const AddPaymentMethodPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(formData),
       });
@@ -62,10 +63,10 @@ const AddPaymentMethodPage = () => {
             <option value="" disabled>
               Select a Payment Method Type
             </option>
-            <option value="credit">Credit Card</option>
-            <option value="debit">Debit Card</option>
-            <option value="bank">Bank</option>
-            <option value="cash">Cash</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="Bank">Bank</option>
+            <option value="Cash">Cash</option>
           </select>
           <label htmlFor="paymentMethodIndicator">
             Payment Method Indicator

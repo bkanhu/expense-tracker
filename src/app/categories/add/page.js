@@ -5,11 +5,12 @@ import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 const AddNewCategoryPage = () => {
   const { user, login, logout } = useContext(AuthContext);
-
+  // const { user } = useAuth();
   const [formData, setFormData] = useState({
     categoryName: '',
     uid: user?.uid,
   });
+  console.log('user', user?.uid);
   const HandleInputChange = (e) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });

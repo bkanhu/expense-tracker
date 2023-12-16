@@ -15,6 +15,7 @@ export const AuthContext = createContext({});
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authToken, setAuthToken] = useState(null);
   console.log(user);
 
   useEffect(() => {
@@ -43,6 +44,29 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       // Handle user data if needed
+      setUser({
+        uid: result.user.uid,
+        email: result.user.email,
+        displayName: result.user.displayName,
+      });
+
+      // This gives you a Google Access Token
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      console.log('token', token);
+
+      useEffect(() => {
+        const setToken = (token) => {
+          setAuthToken(token);
+        };
+        if (token) {
+          setToken(token);
+        }
+      }, [token]);
+
+      // Get the ID token
+      // const idToken = result.user.getIdToken();
+      // console.log('idToken', idToken);
     } catch (error) {
       console.error(error);
       throw new Error('Error signing in with Google');
@@ -55,7 +79,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, authToken }}>
       {loading ? null : children}
     </AuthContext.Provider>
   );
