@@ -5,7 +5,9 @@ import { ChevronLeft, ChevronRight, Dot, FileBarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { formatDate } from '@/utils/formatDate';
 import { formatMonth } from '@/utils/formatMonth';
+import { useRouter } from 'next/navigation';
 const ExpensesPage = () => {
+  const router = useRouter();
   const currentMonthStr = new Date().toLocaleString('default', {
     month: 'long',
   });
@@ -33,6 +35,13 @@ const ExpensesPage = () => {
 
   //   fetchExpensesByDate();
   // }, []);
+
+  // Redirect to /login if the user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
 
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -108,7 +117,7 @@ const ExpensesPage = () => {
       <ul key={date} className="py-4 mb-2 ">
         <h2 className="px-4 text-lg font-bold">{formatDate(date)}</h2>
         {expensesByDate[date].map((expense) => (
-          <li key={expense._id} className="px-4 py-2 bg-gray-500 border-b">
+          <li key={expense._id} className="px-4 py-2 border-b">
             <div className="flex flex-row items-center">
               {/* <div className="p-3 border border-red-400 rounded-md">
                 <FileBarChart2 />

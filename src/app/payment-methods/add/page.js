@@ -3,9 +3,10 @@ import { useRouter } from 'next/navigation';
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
+import { ChevronLeft } from 'lucide-react';
 const AddPaymentMethodPage = () => {
   const { user, Login, logout, authToken } = useContext(AuthContext);
-
+  const router = useRouter();
   const [formData, setFormData] = useState({
     paymentMethodType: '',
     paymentMethodIndicator: '',
@@ -17,9 +18,14 @@ const AddPaymentMethodPage = () => {
       ...formData,
       [name]: value,
     });
-    // e.preventDefault();
-    // setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  // Redirect to /login if the user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
 
   // Post a new payment method to the database
   const postPaymentMethod = async (e) => {
@@ -50,38 +56,53 @@ const AddPaymentMethodPage = () => {
   };
 
   return (
-    <div>
-      <div>
+    <>
+      <div className="flex flex-row items-center w-full px-4 py-2 space-x-3 bg-slate-100 dark:bg-slate-900">
+        <ChevronLeft className="w-8 h-8" />
+        <h1 className="px-4 py-3 text-3xl font-bold">Add A Payment Method</h1>
+      </div>
+      <div className="px-4 py-8">
         <form onSubmit={postPaymentMethod}>
-          <label htmlFor="paymentMethodType">Payment Method Type</label>
-          <select
-            name="paymentMethodType"
-            id="paymentMethodType"
-            value={formData.paymentMethodType}
-            onChange={HandleInputChange}
-          >
-            <option value="" disabled>
-              Select a Payment Method Type
-            </option>
-            <option value="Credit Card">Credit Card</option>
-            <option value="Debit Card">Debit Card</option>
-            <option value="Bank">Bank</option>
-            <option value="Cash">Cash</option>
-          </select>
-          <label htmlFor="paymentMethodIndicator">
-            Payment Method Indicator
-          </label>
-          <input
-            type="text"
-            id="paymentMethodIndicator"
-            name="paymentMethodIndicator"
-            value={formData.paymentMethodIndicator}
-            onChange={HandleInputChange}
-          />
-          <button type="submit">Add Payment Method</button>
+          <div className="mb-4">
+            <label htmlFor="paymentMethodType" className="label-style">
+              Payment Method Type
+            </label>
+            <select
+              name="paymentMethodType"
+              id="paymentMethodType"
+              value={formData.paymentMethodType}
+              onChange={HandleInputChange}
+              className="select-style"
+            >
+              <option value="" disabled>
+                Select a Payment Method Type
+              </option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Bank">Bank</option>
+              <option value="Cash">Cash</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="paymentMethodIndicator" className="label-style">
+              Payment Method Indicator
+            </label>
+            <input
+              type="text"
+              id="paymentMethodIndicator"
+              name="paymentMethodIndicator"
+              value={formData.paymentMethodIndicator}
+              onChange={HandleInputChange}
+              className="input-style"
+              placeholder="e.g. SBI BPCL CARD"
+            />
+          </div>
+          <button type="submit" className="btn-style">
+            Add Payment Method
+          </button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

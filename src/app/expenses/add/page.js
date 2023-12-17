@@ -6,18 +6,18 @@ import { ChevronLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 const AddExpensesPage = () => {
+  const router = useRouter();
   const [Load, setLoad] = useState(false);
   const { user, Login, logout, authToken } = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [fetchedPaymentMethods, setFetchedPaymentMethods] = useState([]);
-  // Redirect if the user is already authenticated
-  // useEffect(() => {
-  //   if (user) {
-  //     router.push('/');
-  //   }
-  // }, [user, router]);
-  // console.log('user', user);
+  // Redirect to /login if the user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
 
   const [formData, setFormData] = useState({
     amount: 0.0,
@@ -72,9 +72,15 @@ const AddExpensesPage = () => {
   ];
   // Fetch Categories
 
-  const fetchCategoriesByAuthUser = async () => {
+  const fetchCategoriesByAuthUser = async (user) => {
     try {
-      const response = await fetch(`/api/categories?uid=${user.uid}`);
+      const response = await fetch(`/api/categories?uid=${user.uid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       const data = await response.json();
       const fetchedCategoryNames = data.map(
         (category) => category.categoryName
@@ -86,7 +92,7 @@ const AddExpensesPage = () => {
   };
 
   useEffect(() => {
-    if (user) fetchCategoriesByAuthUser();
+    if (user) fetchCategoriesByAuthUser(user);
   }, [user]);
 
   // Merge Static and Fetched Categories Array to a single array.
@@ -133,7 +139,9 @@ const AddExpensesPage = () => {
   const fetchPaymentMethodsByAuthUser = async () => {
     try {
       const response = await fetch(`/api/payments-methods?uid=${user.uid}`, {
+        method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${authToken}`,
         },
       });
@@ -303,7 +311,7 @@ const AddExpensesPage = () => {
               </option>
               {paymentMethodTypes.map((paymentMethodType, index) => {
                 return (
-                  <option value={paymentMethodType} key={indexx}>
+                  <option value={paymentMethodType} key={index}>
                     {paymentMethodType}
                   </option>
                 );

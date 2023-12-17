@@ -11,12 +11,16 @@ import {
   Settings,
   WalletCards,
 } from 'lucide-react';
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getFirstCharacter } from '@/utils/getFirstCharacter';
 
 const SettingsPage = () => {
+  const { user, Login, logout, authToken } = useContext(AuthContext);
+  const router = useRouter();
   const pathname = usePathname();
   const navLinks = [
     {
@@ -40,9 +44,17 @@ const SettingsPage = () => {
       icon: <CreditCard />,
     },
   ];
+
+  // Redirect to /login if the user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
+
   const handleLogOut = () => {
     console.log('logout');
-    // logout();
+    logout();
   };
   return (
     <>
@@ -58,8 +70,8 @@ const SettingsPage = () => {
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <p className="text-xl font-semibold">B Kanhu Charan</p>
-              <p className="text-base font-normal">hello@email.com</p>
+              <p className="text-xl font-semibold">{user?.displayName}</p>
+              <p className="text-base font-normal">{user?.email}</p>
             </div>
           </div>
         </div>
