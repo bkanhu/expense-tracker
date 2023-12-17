@@ -21,6 +21,7 @@ const AddExpensesPage = () => {
 
   const [formData, setFormData] = useState({
     amount: 0.0,
+    title: '',
     description: '',
     date: '',
     time: '',
@@ -166,6 +167,7 @@ const AddExpensesPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(formData),
       });
@@ -203,6 +205,19 @@ const AddExpensesPage = () => {
               id="amount"
               name="amount"
               value={formData.amount}
+              onChange={HandleInputChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="title" className="label-style">
+              Title
+            </label>
+            <input
+              className="input-style"
+              type="number"
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={HandleInputChange}
             />
           </div>
