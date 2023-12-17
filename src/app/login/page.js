@@ -74,7 +74,7 @@ const LoginPage = () => {
   const HandleSignIn = async () => {
     setLoad(true);
     try {
-      await login();
+      await Login();
       router.push('/');
       console.log('from handle function to / route');
     } catch (error) {
