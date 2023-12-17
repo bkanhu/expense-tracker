@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 const AddPaymentMethodPage = () => {
-  const { user, login, logout, authToken } = useContext(AuthContext);
+  const { user, Login, logout, authToken } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     paymentMethodType: '',

@@ -10,7 +10,7 @@ const ExpensesPage = () => {
     month: 'long',
   });
   const [expensesByDate, setExpensesByDate] = useState({});
-  const { user, login, logout, authToken } = useContext(AuthContext);
+  const { user, Login, logout, authToken } = useContext(AuthContext);
   // useEffect(() => {
   //   // Fetch expenses grouped by date
   //   const fetchExpensesByDate = async () => {

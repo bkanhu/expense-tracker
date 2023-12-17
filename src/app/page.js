@@ -9,7 +9,7 @@ import { AuthContext } from '@/context/AuthContext';
 export default function Home() {
   const router = useRouter();
   const [Load, setLoad] = useState(false);
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, Login, logout } = useContext(AuthContext);
   // console.log(AuthContext);
 
   // Redirect to /signup if the user is not logged in

@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 const AddNewCategoryPage = () => {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, Login, logout } = useContext(AuthContext);
   // const { user } = useAuth();
   const [formData, setFormData] = useState({
     categoryName: '',

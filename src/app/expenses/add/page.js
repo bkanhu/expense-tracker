@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const AddExpensesPage = () => {
   const [Load, setLoad] = useState(false);
-  const { user, login, logout, authToken } = useContext(AuthContext);
+  const { user, Login, logout, authToken } = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [fetchedPaymentMethods, setFetchedPaymentMethods] = useState([]);
@@ -278,8 +278,12 @@ const AddExpensesPage = () => {
               <option value="" disabled>
                 Select a Payment Method Type
               </option>
-              {categories.map((category) => {
-                return <option value={category}>{category}</option>;
+              {categories.map((category, index) => {
+                return (
+                  <option value={category} key={index}>
+                    {category}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -297,9 +301,11 @@ const AddExpensesPage = () => {
               <option value="" disabled>
                 Select a Payment Method Type
               </option>
-              {paymentMethodTypes.map((paymentMethodType) => {
+              {paymentMethodTypes.map((paymentMethodType, index) => {
                 return (
-                  <option value={paymentMethodType}>{paymentMethodType}</option>
+                  <option value={paymentMethodType} key={indexx}>
+                    {paymentMethodType}
+                  </option>
                 );
               })}
             </select>
@@ -318,9 +324,9 @@ const AddExpensesPage = () => {
               <option value="" disabled>
                 Select a Payment Method Indicator
               </option>
-              {paymentMethodIndicators.map((paymentMethodIndicator) => {
+              {paymentMethodIndicators.map((paymentMethodIndicator, index) => {
                 return (
-                  <option value={paymentMethodIndicator}>
+                  <option value={paymentMethodIndicator} key={index}>
                     {paymentMethodIndicator}
                   </option>
                 );

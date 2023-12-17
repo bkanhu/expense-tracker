@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 
 const CategoriesPage = () => {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, Login, logout } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   // const response = await fetch(`/api/categories?uid=${user.uid}`);

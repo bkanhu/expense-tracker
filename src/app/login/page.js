@@ -9,7 +9,7 @@ import Image from 'next/image';
 const LoginPage = () => {
   const router = useRouter();
   const [Load, setLoad] = useState(false);
-  const { user, login, logout, authToken } = useContext(AuthContext);
+  const { user, Login, logout, authToken } = useContext(AuthContext);
   //   console.log(AuthContext);
 
   // Redirect if the user is already authenticated

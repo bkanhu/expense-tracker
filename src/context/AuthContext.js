@@ -35,7 +35,7 @@ export const AuthContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const login = async () => {
+  const Login = async () => {
     const provider = new GoogleAuthProvider();
 
     provider.addScope('profile');
@@ -79,7 +79,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, authToken }}>
+    <AuthContext.Provider value={{ user, Login, logout, authToken }}>
       {loading ? null : children}
     </AuthContext.Provider>
   );
