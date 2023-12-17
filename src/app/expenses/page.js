@@ -42,7 +42,8 @@ const ExpensesPage = () => {
       router.push('/login');
     }
   }, [user, router]);
-
+  // TODO: Add loading state
+  // const [loading, setLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const currentDate = new Date();
@@ -158,9 +159,9 @@ const ExpensesPage = () => {
         <div className="flex items-center justify-between w-full px-4 py-3">
           <h1 className="text-3xl font-bold ">Expenses</h1>
           <Link
-            href="/add"
+            href="/expenses/add"
             alt="Link to Add Expenses page "
-            className="px-4 py-1 text-white bg-blue-500 rounded-full"
+            className="px-4 py-1 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Add Expense
           </Link>

@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { ChevronLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 const AddExpensesPage = () => {
   const router = useRouter();
@@ -198,11 +199,13 @@ const AddExpensesPage = () => {
   return (
     <>
       <div className="flex flex-row items-center w-full px-4 py-2 space-x-3 bg-slate-100 dark:bg-slate-900">
-        <ChevronLeft className="w-8 h-8" />
+        <Link href="/expenses" alt="link to expenses page" className="">
+          <ChevronLeft className="w-8 h-8" />
+        </Link>
         <h1 className="px-4 py-3 text-3xl font-bold">Add An Expense</h1>
       </div>
       <div className="px-4 py-8 ">
-        <form onSubmit={postExpenseData}>
+        <form onSubmit={postExpenseData} className="mb-20">
           <div className="mb-4">
             <label htmlFor="amount" className="label-style">
               Amount
@@ -214,6 +217,7 @@ const AddExpensesPage = () => {
               name="amount"
               value={formData.amount}
               onChange={HandleInputChange}
+              placeholder='e.g. "100"'
             />
           </div>
           <div className="mb-4">
@@ -222,11 +226,12 @@ const AddExpensesPage = () => {
             </label>
             <input
               className="input-style"
-              type="number"
+              type="text"
               id="title"
               name="title"
               value={formData.title}
               onChange={HandleInputChange}
+              placeholder='e.g. "Lunch at McDonalds"'
             />
           </div>
           <div className="mb-4">
@@ -241,6 +246,7 @@ const AddExpensesPage = () => {
               name="description"
               value={formData.description}
               onChange={HandleInputChange}
+              placeholder='e.g. "Lunch at McDonalds with friends"'
             />
           </div>
           <div className="mb-4">
@@ -255,6 +261,7 @@ const AddExpensesPage = () => {
               name="date"
               value={formData.date}
               onChange={HandleInputChange}
+              placeholder='e.g. "2021-01-01"'
             />
           </div>
           <div className="mb-4">
@@ -269,6 +276,7 @@ const AddExpensesPage = () => {
               name="time"
               value={formData.time}
               onChange={HandleInputChange}
+              placeholder='e.g. "12:00"'
             />
           </div>
 
@@ -342,7 +350,9 @@ const AddExpensesPage = () => {
             </select>
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit" className="btn-style">
+            Submit
+          </button>
         </form>
       </div>
     </>

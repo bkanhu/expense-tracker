@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
 const AddPaymentMethodPage = () => {
   const { user, Login, logout, authToken } = useContext(AuthContext);
   const router = useRouter();
@@ -58,7 +59,9 @@ const AddPaymentMethodPage = () => {
   return (
     <>
       <div className="flex flex-row items-center w-full px-4 py-2 space-x-3 bg-slate-100 dark:bg-slate-900">
-        <ChevronLeft className="w-8 h-8" />
+        <Link href="/payment-methods" alt="link to payment method page">
+          <ChevronLeft className="w-8 h-8" />
+        </Link>
         <h1 className="px-4 py-3 text-3xl font-bold">Add A Payment Method</h1>
       </div>
       <div className="px-4 py-8">
