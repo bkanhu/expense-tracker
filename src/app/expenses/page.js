@@ -154,7 +154,7 @@ const ExpensesPage = () => {
     ));
   };
   return (
-    <>
+    <div className="">
       <div className="bg-slate-100 dark:bg-slate-900">
         <div className="flex items-center justify-between w-full px-4 py-3">
           <h1 className="text-3xl font-bold ">Expenses</h1>
@@ -193,7 +193,8 @@ const ExpensesPage = () => {
         </button>
       </div>
       {renderExpensesByDate()}
-    </>
+      <div className="mb-36"></div>
+    </div>
   );
 };
 

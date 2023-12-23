@@ -30,13 +30,15 @@ const BottomNavbar = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex flex-row justify-between w-full h-16 gap-4 px-10 py-2 bg-slate-100">
+    <nav className="fixed bottom-0 left-0 right-0 flex flex-row justify-between w-full h-16 gap-4 px-10 py-2 md:m-auto md:bottom-6 md:w-96 bg-slate-100 md:bg-gray-900 md:rounded-lg md:px-4">
       {navLinks.map((link, index) => (
         <Link
           href={link.path}
           alt={Link.name}
           className={`flex flex-col items-center space-y-1 ${
-            pathname === link.path ? 'text-slate-900' : 'text-slate-500'
+            pathname === link.path
+              ? 'text-slate-900 md:text-slate-200'
+              : 'text-slate-500'
           } `}
           key={index}
         >

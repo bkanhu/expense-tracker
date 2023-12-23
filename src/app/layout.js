@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${inter.className} relative dark:bg-slate-800`}>
+      <body className={`${inter.className} relative md:m-auto md:w-96`}>
         <AuthContextProvider>{children}</AuthContextProvider>
         {pathname === '/login' ? null : <BottomNavbar />}
         <ToastContainer />

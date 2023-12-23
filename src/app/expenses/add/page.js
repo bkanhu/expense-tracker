@@ -5,6 +5,7 @@ import { AuthContext } from '@/context/AuthContext';
 import { ChevronLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import Loading from '@/components/Loading';
 
 const AddExpensesPage = () => {
   const router = useRouter();
@@ -13,6 +14,7 @@ const AddExpensesPage = () => {
   const [categories, setCategories] = useState([]);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [fetchedPaymentMethods, setFetchedPaymentMethods] = useState([]);
+
   // Redirect to /login if the user is not logged in
   useEffect(() => {
     if (!user) {
@@ -38,8 +40,6 @@ const AddExpensesPage = () => {
       ...formData,
       [name]: value,
     });
-    // e.preventDefault();
-    // setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // Static Categories
@@ -111,31 +111,22 @@ const AddExpensesPage = () => {
   }, [fetchedCategories]);
 
   // Get payment methods from the database and set them in state
-  useEffect(() => {
-    const fetchData = async () => {
-      // console.log('Fetching data for user:', user.uid);
-      try {
-        const response = await fetch(`/api/payments-methods?uid=${user.uid}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        const data = await response.json();
-        // console.log('Received data:', data);
-        setFetchedPaymentMethods(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      // finally {
-      // setLoading(false);
-      // console.log('Payment methods for user:', fetchedPaymentMethods);
-      // }
-    };
-
-    if (user) {
-      fetchData();
+  const fetchPaymentsMethodsByAuthUser = async () => {
+    try {
+      const response = await fetch(`/api/payments-methods?uid=${user.uid}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      const data = await response.json();
+      setFetchedPaymentMethods(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  }, [user]); // Include 'user' in the dependency array
+  };
+  useEffect(() => {
+    if (user) fetchPaymentsMethodsByAuthUser();
+  }, [user]);
 
   const fetchPaymentMethodsByAuthUser = async () => {
     try {
@@ -161,6 +152,8 @@ const AddExpensesPage = () => {
   const paymentMethodTypes = fetchedPaymentMethods.map((paymentMethod) => {
     return paymentMethod.paymentMethodType;
   });
+  // Remove duplicates by converting the array to a Set and back to an array
+  const uniquePaymentMethodTypes = [...new Set(paymentMethodTypes)];
 
   // From the fetched payment methods, get the payment method indicators and set them in state
   const paymentMethodIndicators = fetchedPaymentMethods.map((paymentMethod) => {
@@ -180,22 +173,39 @@ const AddExpensesPage = () => {
         },
         body: JSON.stringify(formData),
       });
-      console.log('res', res);
+      // console.log('res', res);
 
       if (res.ok) {
-        console.log('Expense added successfully.');
         toast('Expense added successfully 🎉');
       } else {
-        console.error('Failed to add Expense.');
         toast('Failed to add Expense  😵');
       }
     } catch (error) {
       console.error('Error posting user data:', error);
       toast('Failed to add Expense. so  😵');
+    } finally {
+      setFormData({
+        amount: 0.0,
+        title: '',
+        description: '',
+        date: '',
+        time: '',
+        category: '',
+        paymentMethodType: '',
+        paymentMethodIndicator: '',
+      });
     }
-
-    console.log('formData', formData);
   };
+
+  // Render loading state while fetching data
+  if (!user || !categories.length || !fetchedPaymentMethods.length) {
+    return (
+      <>
+        <Loading />
+        Loading...
+      </>
+    ); // Adjust the loading indicator as needed
+  }
   return (
     <>
       <div className="flex flex-row items-center w-full px-4 py-2 space-x-3 bg-slate-100 dark:bg-slate-900">
@@ -317,7 +327,7 @@ const AddExpensesPage = () => {
               <option value="" disabled>
                 Select a Payment Method Type
               </option>
-              {paymentMethodTypes.map((paymentMethodType, index) => {
+              {uniquePaymentMethodTypes.map((paymentMethodType, index) => {
                 return (
                   <option value={paymentMethodType} key={index}>
                     {paymentMethodType}
